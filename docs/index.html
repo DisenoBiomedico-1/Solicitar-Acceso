@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Cómo instalar tu propia copia del sistema de gestión de Diseño Biomédico 1 en GitHub</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-alt: #f4f5f7;
+    --text: #1c1e21;
+    --text-muted: #55595e;
+    --border: #d9dce1;
+    --accent: #1a56db;
+    --accent-bg: #e8f0fe;
+    --code-bg: #f0f1f3;
+    --warn-bg: #fff4e5;
+    --warn-border: #e8a33d;
+    --tab-inactive-bg: #eceef1;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16181c;
+      --bg-alt: #1f2226;
+      --text: #e7e9ea;
+      --text-muted: #a6acb3;
+      --border: #33373d;
+      --accent: #6ea8fe;
+      --accent-bg: #1a2a44;
+      --code-bg: #23262b;
+      --warn-bg: #3a2e12;
+      --warn-border: #b8842f;
+      --tab-inactive-bg: #23262b;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #16181c; --bg-alt: #1f2226; --text: #e7e9ea; --text-muted: #a6acb3;
+    --border: #33373d; --accent: #6ea8fe; --accent-bg: #1a2a44; --code-bg: #23262b;
+    --warn-bg: #3a2e12; --warn-border: #b8842f; --tab-inactive-bg: #23262b;
+  }
+  :root[data-theme="light"] {
+    --bg: #ffffff; --bg-alt: #f4f5f7; --text: #1c1e21; --text-muted: #55595e;
+    --border: #d9dce1; --accent: #1a56db; --accent-bg: #e8f0fe; --code-bg: #f0f1f3;
+    --warn-bg: #fff4e5; --warn-border: #e8a33d; --tab-inactive-bg: #eceef1;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+  }
+  main {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 5rem;
+  }
+  h1 {
+    font-size: 1.65rem;
+    margin: 0 0 0.75rem;
+  }
+  h2 {
+    font-size: 1.15rem;
+    margin: 2.5rem 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .intro {
+    color: var(--text-muted);
+    font-size: 1rem;
+  }
+  ul { padding-left: 1.3rem; }
+  li { margin: 0.35rem 0; }
+  code {
+    background: var(--code-bg);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+    overflow-x: auto;
+  }
+  pre code { background: none; padding: 0; }
+  a { color: var(--accent); }
+
+  .warn {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    margin: 1rem 0;
+  }
+
+  /* Selector de camino */
+  .path-picker {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin: 1rem 0;
+  }
+  @media (max-width: 520px) {
+    .path-picker { grid-template-columns: 1fr; }
+  }
+  .path-btn {
+    text-align: left;
+    cursor: pointer;
+    border: 2px solid var(--border);
+    background: var(--bg-alt);
+    color: var(--text);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+    font-family: inherit;
+    font-size: 0.95rem;
+  }
+  .path-btn strong { display: block; margin-bottom: 0.25rem; font-size: 1rem; }
+  .path-btn small { color: var(--text-muted); }
+  .path-btn[aria-pressed="true"] {
+    border-color: var(--accent);
+    background: var(--accent-bg);
+  }
+
+  /* Pasos */
+  .step {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+    margin: 0.9rem 0;
+    background: var(--bg-alt);
+  }
+  .step-common { border-left: 4px solid var(--accent); }
+  .step[data-path] { display: none; }
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-right: 0.5rem;
+  }
+  .step h3 {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    margin: 0 0 0.6rem;
+  }
+  .tag {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    background: var(--tab-inactive-bg);
+    color: var(--text-muted);
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    margin-left: auto;
+  }
+
+  .footer-note {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  .hint {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin-top: -0.4rem;
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <h1>Cómo instalar tu propia copia de un sistema de gestión para el curso de Diseño Biomédico 1 en GitHub</h1>
+  <p class="intro">
+    Este documento explica cómo replicar, en una organización de GitHub propia, un
+    conjunto de herramientas que reemplaza a GitHub Classroom para el curso de Diseño
+    Biomédico 1 de la UAO, organizado en retos semanales por equipo: crea
+    automáticamente un repositorio por equipo a partir de una plantilla, invita a los
+    estudiantes, publica los retos como issues con sus fechas de entrega, y genera un
+    Project Board de seguimiento. El resultado queda bajo control total de quien lo
+    instala, sin depender del origen de esta guía ni de que alguien más lo mantenga.
+  </p>
+
+  <h2>Qué vas a tener al final</h2>
+  <ul>
+    <li>Una plantilla de repositorio para cada grupo. Con ella, los estudiantes
+      aprenden a usar GitHub como herramienta de documentación mientras resuelven
+      retos semanales sobre los temas del curso de Diseño Biomédico 1. El
+      resultado final es un Design History File (DHF), la designación
+      internacional equivalente es Design Development File (DDF). La FDA (21 CFR
+      Parte 820.30) y la norma ISO 13485 exigen ese DHF/DDF.</li>
+    <li>Un repo de administración que, a partir de un CSV con los integrantes de
+      cada equipo, crea el repo del equipo, invita a los estudiantes, siembra los
+      18 Retos como issues con sus milestones, y crea un Project Board. Todo
+      automático.</li>
+    <li>Un sistema de fechas de entrega: se editan en un solo archivo
+      (<code>fechas-retos.csv</code>) y se propagan solas a todos los issues ya
+      creados.</li>
+  </ul>
+
+  <h2>Requisitos previos</h2>
+  <ul>
+    <li>Una cuenta de GitHub (el plan gratuito es suficiente).</li>
+    <li>Diez minutos para ejecutar un conjunto de comandos, una sola vez.</li>
+    <li>
+      <strong>Acceso de lectura a los repos plantilla</strong>, solicitado con
+      anticipación. <a href="https://github.com/DisenoBiomedico-1/Solicitar-Acceso/issues/new?template=solicitud-acceso.yml">Solicítalo aquí</a>.
+      Esta solicitud requiere aprobación manual de un administrador de
+      <code>DisenoBiomedico-1</code>, así que conviene enviarla antes de empezar los
+      pasos siguientes: mientras se aprueba, puedes avanzar con el resto sin
+      interrupciones.
+    </li>
+  </ul>
+
+  <h2>Elige tu camino</h2>
+  <p class="hint">Los Pasos 1 a 3 son comunes a ambos caminos y aparecen siempre abajo.</p>
+  <div class="path-picker" role="group" aria-label="Selección de camino">
+    <button type="button" class="path-btn" id="btn-auto" aria-pressed="false" onclick="elegirCamino('auto')">
+      <strong>Camino automático</strong>
+      <small>Requiere Python y familiaridad con el uso de una terminal. Un solo script ejecuta los Pasos 5 a 7.</small>
+    </button>
+    <button type="button" class="path-btn" id="btn-manual" aria-pressed="false" onclick="elegirCamino('manual')">
+      <strong>Camino manual</strong>
+      <small>Sin instalar nada. Todos los pasos se hacen desde el navegador, uno por uno.</small>
+    </button>
+  </div>
+
+  <!-- Pasos comunes 1-2 -->
+  <div class="step step-common">
+    <h3><span class="step-num">1</span> Crea tu organización</h3>
+    <ol>
+      <li>Accede a <code>github.com/account/organizations/new</code>.</li>
+      <li>Selecciona el plan gratuito.</li>
+      <li>Anota el nombre exacto de la organización (por ejemplo, <code>MiOrg-DB1</code>).</li>
+    </ol>
+  </div>
+
+  <div class="step step-common">
+    <h3><span class="step-num">2</span> Genera tu propio token de administración</h3>
+    <p>Accede a <code>github.com/settings/personal-access-tokens/new</code> y configura:</p>
+    <ul>
+      <li><strong>Token name:</strong> el nombre es de uso interno, cualquier valor descriptivo sirve, por ejemplo <code>ORG_ADMIN_TOKEN-TU-ORG</code>.</li>
+      <li><strong>Resource owner:</strong> la organización nueva.</li>
+      <li><strong>Repository access:</strong> <em>All repositories</em>.</li>
+      <li><strong>Permissions:</strong>
+        <ul>
+          <li>Organización → <strong>Administration</strong>: Read and write.</li>
+          <li>Organización → <strong>Projects</strong>: Read and write.</li>
+          <li>Repositorio → <strong>Administration</strong>: Read and write.</li>
+          <li>Repositorio → <strong>Contents</strong>: Read and write.</li>
+          <li>Repositorio → <strong>Issues</strong>: Read and write.</li>
+          <li>Repositorio → <strong>Secrets</strong>: Read and write.</li>
+          <li>Repositorio → <strong>Workflows</strong>: Read and write.</li>
+        </ul>
+      </li>
+    </ul>
+    <div class="warn">No compartas este token ni lo pegues en ningún chat, issue o PR.</div>
+  </div>
+
+  <!-- Paso 3: común. Un fine-grained PAT queda atado a un único resource
+       owner (tu org nueva), así que no puede leer nada de DisenoBiomedico-1
+       aunque seas colaborador ahí: este paso no es automatizable por API, y
+       por eso es común a los dos caminos, no exclusivo del manual. -->
+  <div class="step step-common">
+    <h3><span class="step-num">3</span> Clona ambos repos, con "Use this template"</h3>
+    <p>En cada uno de los dos repos:</p>
+    <ol>
+      <li>Botón verde <strong>"Use this template"</strong> → <strong>"Create a new repository"</strong>.</li>
+      <li>Owner: la organización nueva, no la cuenta personal.</li>
+      <li>Nombre: el mismo (<code>Plantilla-Diseno1</code>, <code>curso-admin</code>) u otro a elección.</li>
+      <li>Visibilidad: privado.</li>
+    </ol>
+    <p>Repite el procedimiento con los dos repos.</p>
+  </div>
+
+  <!-- Paso 4: solo camino automático -->
+  <div class="step" data-path="auto">
+    <h3><span class="step-num">4</span> Ejecuta el script automático <span class="tag">Camino automático</span></h3>
+    <p><a href="replicar_en_tu_org.py" download>Este script</a> ejecuta los Pasos 5 a 7.</p>
+    <pre><code>pip install requests pynacl
+python3 replicar_en_tu_org.py --org TU-ORG-NUEVA</code></pre>
+    <p>Si no se pasa <code>--token</code>, el script lo solicita de forma oculta. Al finalizar, continúa en el Paso 8.</p>
+  </div>
+
+  <!-- Pasos 5-7: solo camino manual -->
+  <div class="step" data-path="manual">
+    <h3><span class="step-num">5</span> Adapta el nombre de tu organización en los scripts <span class="tag">Camino manual</span></h3>
+    <p>
+      El nombre de la organización de origen aparece como variable al inicio de
+      varios scripts. En la copia de <code>curso-admin</code>, busca y reemplaza
+      <code>DisenoBiomedico-1</code> por el nombre de la organización nueva en
+      estos archivos:
+    </p>
+    <ul>
+      <li><code>scripts/crear_repos_grupos.sh</code> (dos apariciones: <code>ORG=</code> y <code>TEMPLATE=</code>)</li>
+      <li><code>scripts/reasignar_certificados.sh</code></li>
+      <li><code>scripts/vincular_project.sh</code></li>
+      <li><code>scripts/listar_projects.sh</code></li>
+      <li><code>scripts/agregar_estudiante.sh</code></li>
+      <li><code>scripts/borrar_projects.sh</code></li>
+      <li><code>scripts/borrar_repo.sh</code></li>
+      <li><code>scripts/crear_project.sh</code></li>
+      <li><code>.github/workflows/actualizar-fechas.yml</code> (una aparición, dentro del comando que llama a <code>crear_issues_iniciales.sh</code>)</li>
+    </ul>
+    <p>El reemplazo puede hacerse desde GitHub (editando cada archivo en el navegador) o desde un clon local del repo.</p>
+  </div>
+
+  <div class="step" data-path="manual">
+    <h3><span class="step-num">6</span> Guarda el token como secret <span class="tag">Camino manual</span></h3>
+    <p>
+      En la copia de <code>curso-admin</code>: <em>Settings</em> → <em>Secrets and
+      variables</em> → <em>Actions</em> → <em>New repository secret</em> →
+      nombre <code>ORG_ADMIN_TOKEN</code> → valor: el token generado en el Paso 2.
+    </p>
+  </div>
+
+  <div class="step" data-path="manual">
+    <h3><span class="step-num">7</span> Configura los privilegios de tu organización <span class="tag">Camino manual</span></h3>
+    <p>En <code>github.com/organizations/TU-ORG/settings/member_privileges</code>, configura:</p>
+    <ul>
+      <li><strong>Base permissions</strong>: "No permissions".</li>
+      <li><strong>Repository creation</strong>: restringido a <em>Private repositories only</em> si tu plan lo permite. En el plan gratuito de organización, GitHub no ofrece esa restricción (solo "todos los tipos" o "ninguno"): si te importa acotarlo, requiere un plan Team o superior.</li>
+      <li><strong>Allow forking of private repositories</strong>: desactivado.</li>
+    </ul>
+  </div>
+
+  <!-- Pasos comunes 8-9 -->
+  <div class="step step-common">
+    <h3><span class="step-num">8</span> Completa tus datos</h3>
+    <ul>
+      <li><code>curso-admin/roster/*.csv</code>: los grupos, un archivo por grupo u horario.</li>
+      <li><code>curso-admin/scripts/issues_iniciales/fechas-retos.csv</code>: las fechas del semestre. Formato <code>id;fecha</code>; los 16 Retos ya están listados, resta completar la columna de fecha.</li>
+      <li>Los 18 <code>.md</code> de <code>issues_iniciales/</code>: contenido editable según el estilo de clase o los casos de cada profesor.</li>
+      <li>Opcional: crear un repo de material (lecturas, presentaciones, anexos) y enlazarlo desde el README de la plantilla, con el patrón <code>{{PROFESOR}}</code> / <code>MATERIAL_INICIO</code>/<code>MATERIAL_FIN</code> que trae <code>Plantilla-Diseno1</code>. Si la organización tiene un solo profesor, el material puede incorporarse directamente en la plantilla.</li>
+    </ul>
+  </div>
+
+  <div class="step step-common">
+    <h3><span class="step-num">9</span> Prueba con una fila de prueba antes de usarlo con estudiantes reales</h3>
+    <ol>
+      <li>Agrega una fila de prueba a un roster con un usuario de GitHub de prueba.</li>
+      <li>Ejecuta <code>crear-repos-grupos.yml</code> manualmente desde la pestaña <em>Actions</em>.</li>
+      <li>Verifica que el repo, los 18 issues, el Project Board y el README queden correctos.</li>
+      <li>Carga los rosters reales solo después de completar esta verificación.</li>
+    </ol>
+  </div>
+
+  <div class="footer-note">
+    <strong>Mantenimiento:</strong> esta copia queda bajo responsabilidad exclusiva
+    de quien la administra. Correcciones y mejoras se aplican directamente sobre
+    ella; no se sincronizan automáticamente con <code>DisenoBiomedico-1</code> en
+    ninguna dirección.
+  </div>
+
+</main>
+
+<script>
+  function elegirCamino(camino) {
+    document.getElementById('btn-auto').setAttribute('aria-pressed', String(camino === 'auto'));
+    document.getElementById('btn-manual').setAttribute('aria-pressed', String(camino === 'manual'));
+    document.querySelectorAll('.step[data-path]').forEach(function (el) {
+      el.style.display = (el.getAttribute('data-path') === camino) ? 'block' : 'none';
+    });
+    try { localStorage.setItem('replicar-camino', camino); } catch (e) {}
+  }
+  (function () {
+    var guardado = null;
+    try { guardado = localStorage.getItem('replicar-camino'); } catch (e) {}
+    elegirCamino(guardado === 'manual' ? 'manual' : 'auto');
+  })();
+</script>
+
+</body>
+</html>
