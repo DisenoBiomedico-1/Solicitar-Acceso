@@ -4,7 +4,7 @@ Repo público para solicitar acceso de lectura a
 [`DisenoBiomedico-1/Plantilla-Diseno1`](https://github.com/DisenoBiomedico-1/Plantilla-Diseno1)
 y [`DisenoBiomedico-1/curso-admin`](https://github.com/DisenoBiomedico-1/curso-admin),
 paso previo para replicar el sistema de gestión del curso en una organización de GitHub
-propia (ver `REPLICAR-EN-TU-ORG.html` en `curso-admin`).
+propia (ver la guía en [disenobiomedico-1.github.io/curso-admin](https://disenobiomedico-1.github.io/curso-admin/)).
 
 ## Cómo solicitar acceso
 
