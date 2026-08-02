@@ -1,0 +1,30 @@
+name: Solicitud de acceso a los repos plantilla
+description: Solicita acceso de lectura a Plantilla-Diseno1 y curso-admin, para replicar el sistema de gestión de Diseño Biomédico 1 en tu propia organización de GitHub.
+title: "[Acceso] "
+labels: ["pendiente-aprobacion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Esta solicitud requiere aprobación manual. Un administrador de
+        DisenoBiomedico-1 revisa cada solicitud antes de otorgar acceso.
+  - type: input
+    id: usuario_github
+    attributes:
+      label: Usuario de GitHub
+      description: Tu usuario de GitHub, tal como aparece en tu perfil (sin arroba).
+      placeholder: usuario-de-github
+    validations:
+      required: true
+  - type: input
+    id: nombre
+    attributes:
+      label: Nombre completo
+    validations:
+      required: true
+  - type: input
+    id: institucion
+    attributes:
+      label: Institución y curso donde vas a usar este sistema
+    validations:
+      required: true

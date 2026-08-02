@@ -1,0 +1,49 @@
+name: Otorgar acceso a repos plantilla
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  issues: write
+
+jobs:
+  otorgar:
+    if: github.event.label.name == 'aprobado'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extraer y validar el usuario de GitHub del issue
+        id: extraer
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          USUARIO="$(printf '%s\n' "$ISSUE_BODY" | sed -n '/### Usuario de GitHub/,/^### /{ /### Usuario de GitHub/d; /^### /d; p }' | xargs)"
+          if [[ ! "$USUARIO" =~ ^[A-Za-z0-9](-?[A-Za-z0-9]){0,38}$ ]]; then
+            echo "::error::No se pudo extraer un usuario de GitHub válido del issue (obtenido: '$USUARIO')."
+            exit 1
+          fi
+          echo "usuario=$USUARIO" >> "$GITHUB_OUTPUT"
+
+      - name: Otorgar acceso de lectura a los repos plantilla
+        env:
+          GH_TOKEN: ${{ secrets.ORG_ADMIN_TOKEN }}
+          USUARIO: ${{ steps.extraer.outputs.usuario }}
+        run: |
+          for repo in Plantilla-Diseno1 curso-admin; do
+            echo "Agregando a $USUARIO como colaborador de lectura en DisenoBiomedico-1/$repo..."
+            if gh api --method PUT "repos/DisenoBiomedico-1/$repo/collaborators/$USUARIO" -f permission=pull >/dev/null 2>&1; then
+              echo "  + Listo."
+            else
+              echo "  ✗ No se pudo agregar a $USUARIO en $repo (¿usuario mal escrito?)." >&2
+              exit 1
+            fi
+          done
+
+      - name: Comentar y cerrar el issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USUARIO: ${{ steps.extraer.outputs.usuario }}
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" \
+            --body "Acceso de lectura otorgado a $USUARIO en Plantilla-Diseno1 y curso-admin. Revisa tus notificaciones de GitHub para aceptar la invitación de colaborador."
+          gh issue close "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --reason completed
