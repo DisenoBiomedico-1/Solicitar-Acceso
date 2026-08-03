@@ -22,6 +22,7 @@ automáticamente: agrega al usuario solicitante como colaborador de lectura (per
 `pull`) en `Plantilla-Diseno1` y `curso-admin`, comenta en el issue confirmando el acceso,
 y lo cierra. El usuario recibe la invitación de colaborador por notificación de GitHub.
 
+<!--
 ## Por qué existe este repo separado
 
 `curso-admin` es privado y va a contener, con el tiempo, usuarios reales de estudiantes
@@ -39,3 +40,4 @@ sistema" viviera en `curso-admin`, cada copia resultante arrastraría esa guía 
 sin ningún uso una vez que ya replicó. Este repo no es plantilla, así que no tiene ese
 problema, y ya era el punto de entrada público natural para quien quiere empezar a
 replicar.
+-->
