@@ -222,17 +222,27 @@
       anticipación. <a href="https://github.com/DisenoBiomedico-1/Solicitar-Acceso/issues/new?template=solicitud-acceso.yml">Solicítalo aquí</a>.
       Esta solicitud requiere aprobación manual de un administrador de
       <code>DisenoBiomedico-1</code>, así que conviene enviarla antes de empezar los
-      pasos siguientes: mientras se aprueba, puedes avanzar con el resto sin
-      interrupciones.
+      pasos siguientes: mientras se aprueba, puedes avanzar con el Paso 1 (crear tu
+      organización) y el Paso 2 (generar tu token) sin interrupciones.
+      <p><strong>Una vez aprobada tu solicitud, haz lo siguiente:</strong></p>
+      <p><strong>Clona ambos repos, con "Use this template"</strong></p>
+      <p>En cada uno de los dos repos a los que se te dio acceso:</p>
+      <ol>
+        <li>Botón verde <strong>"Use this template"</strong> → <strong>"Create a new repository"</strong>.</li>
+        <li>Owner: la organización que creaste en el Paso 1, no la cuenta personal.</li>
+        <li>Nombre: el mismo (<code>Plantilla-Diseno1</code>, <code>curso-admin</code>) u otro a elección.</li>
+        <li>Visibilidad: privado.</li>
+      </ol>
+      <p>Repite el procedimiento con los dos repos.</p>
     </li>
   </ul>
 
   <h2>Elige tu camino</h2>
-  <p class="hint">Los Pasos 1 a 3 son comunes a ambos caminos y aparecen siempre abajo.</p>
+  <p class="hint">Los Pasos 1 y 2 son comunes a ambos caminos y aparecen siempre abajo.</p>
   <div class="path-picker" role="group" aria-label="Selección de camino">
     <button type="button" class="path-btn" id="btn-auto" aria-pressed="false" onclick="elegirCamino('auto')">
       <strong>Camino automático</strong>
-      <small>Requiere Python y familiaridad con el uso de una terminal. Un solo script ejecuta los Pasos 5 a 7.</small>
+      <small>Requiere Python y familiaridad con el uso de una terminal. Un solo script ejecuta los Pasos 4 a 6.</small>
     </button>
     <button type="button" class="path-btn" id="btn-manual" aria-pressed="false" onclick="elegirCamino('manual')">
       <strong>Camino manual</strong>
@@ -272,34 +282,18 @@
     <div class="warn">No compartas este token ni lo pegues en ningún chat, issue o PR.</div>
   </div>
 
-  <!-- Paso 3: común. Un fine-grained PAT queda atado a un único resource
-       owner (tu org nueva), así que no puede leer nada de DisenoBiomedico-1
-       aunque seas colaborador ahí: este paso no es automatizable por API, y
-       por eso es común a los dos caminos, no exclusivo del manual. -->
-  <div class="step step-common">
-    <h3><span class="step-num">3</span> Clona ambos repos, con "Use this template"</h3>
-    <p>En cada uno de los dos repos:</p>
-    <ol>
-      <li>Botón verde <strong>"Use this template"</strong> → <strong>"Create a new repository"</strong>.</li>
-      <li>Owner: la organización nueva, no la cuenta personal.</li>
-      <li>Nombre: el mismo (<code>Plantilla-Diseno1</code>, <code>curso-admin</code>) u otro a elección.</li>
-      <li>Visibilidad: privado.</li>
-    </ol>
-    <p>Repite el procedimiento con los dos repos.</p>
-  </div>
-
-  <!-- Paso 4: solo camino automático -->
+  <!-- Paso 3: solo camino automático -->
   <div class="step" data-path="auto">
-    <h3><span class="step-num">4</span> Ejecuta el script automático <span class="tag">Camino automático</span></h3>
-    <p><a href="replicar_en_tu_org.py" download>Este script</a> ejecuta los Pasos 5 a 7.</p>
+    <h3><span class="step-num">3</span> Ejecuta el script automático <span class="tag">Camino automático</span></h3>
+    <p><a href="replicar_en_tu_org.py" download>Este script</a> ejecuta los Pasos 4 a 6.</p>
     <pre><code>pip install requests pynacl
 python3 replicar_en_tu_org.py --org TU-ORG-NUEVA</code></pre>
-    <p>Si no se pasa <code>--token</code>, el script lo solicita de forma oculta. Al finalizar, continúa en el Paso 8.</p>
+    <p>Si no se pasa <code>--token</code>, el script lo solicita de forma oculta. Al finalizar, continúa en el Paso 7.</p>
   </div>
 
-  <!-- Pasos 5-7: solo camino manual -->
+  <!-- Pasos 4-6: solo camino manual -->
   <div class="step" data-path="manual">
-    <h3><span class="step-num">5</span> Adapta el nombre de tu organización en los scripts <span class="tag">Camino manual</span></h3>
+    <h3><span class="step-num">4</span> Adapta el nombre de tu organización en los scripts <span class="tag">Camino manual</span></h3>
     <p>
       El nombre de la organización de origen aparece como variable al inicio de
       varios scripts. En la copia de <code>curso-admin</code>, busca y reemplaza
@@ -321,7 +315,7 @@ python3 replicar_en_tu_org.py --org TU-ORG-NUEVA</code></pre>
   </div>
 
   <div class="step" data-path="manual">
-    <h3><span class="step-num">6</span> Guarda el token como secret <span class="tag">Camino manual</span></h3>
+    <h3><span class="step-num">5</span> Guarda el token como secret <span class="tag">Camino manual</span></h3>
     <p>
       En la copia de <code>curso-admin</code>: <em>Settings</em> → <em>Secrets and
       variables</em> → <em>Actions</em> → <em>New repository secret</em> →
@@ -330,7 +324,7 @@ python3 replicar_en_tu_org.py --org TU-ORG-NUEVA</code></pre>
   </div>
 
   <div class="step" data-path="manual">
-    <h3><span class="step-num">7</span> Configura los privilegios de tu organización <span class="tag">Camino manual</span></h3>
+    <h3><span class="step-num">6</span> Configura los privilegios de tu organización <span class="tag">Camino manual</span></h3>
     <p>En <code>github.com/organizations/TU-ORG/settings/member_privileges</code>, configura:</p>
     <ul>
       <li><strong>Base permissions</strong>: "No permissions".</li>
@@ -339,9 +333,9 @@ python3 replicar_en_tu_org.py --org TU-ORG-NUEVA</code></pre>
     </ul>
   </div>
 
-  <!-- Pasos comunes 8-9 -->
+  <!-- Pasos comunes 7-8 -->
   <div class="step step-common">
-    <h3><span class="step-num">8</span> Completa tus datos</h3>
+    <h3><span class="step-num">7</span> Completa tus datos</h3>
     <ul>
       <li><code>curso-admin/roster/*.csv</code>: los grupos, un archivo por grupo u horario.</li>
       <li><code>curso-admin/scripts/issues_iniciales/fechas-retos.csv</code>: las fechas del semestre. Formato <code>id;fecha</code>; los 16 Retos ya están listados, resta completar la columna de fecha.</li>
@@ -351,7 +345,7 @@ python3 replicar_en_tu_org.py --org TU-ORG-NUEVA</code></pre>
   </div>
 
   <div class="step step-common">
-    <h3><span class="step-num">9</span> Prueba con una fila de prueba antes de usarlo con estudiantes reales</h3>
+    <h3><span class="step-num">8</span> Prueba con una fila de prueba antes de usarlo con estudiantes reales</h3>
     <ol>
       <li>Agrega una fila de prueba a un roster con un usuario de GitHub de prueba.</li>
       <li>Ejecuta <code>crear-repos-grupos.yml</code> manualmente desde la pestaña <em>Actions</em>.</li>

@@ -32,8 +32,9 @@ script, así que no tiene sentido tratar de automatizarlo):
   - Completar tus rosters de estudiantes ni las fechas reales del
     semestre: eso es información que solo vos tenés.
 
-Requisitos previos (ver https://disenobiomedico-1.github.io/Solicitar-Acceso/, Pasos 1 a 3,
-antes de correr esto):
+Requisitos previos (ver https://disenobiomedico-1.github.io/Solicitar-Acceso/,
+Pasos 1 y 2, y la sección "Requisitos previos" para el clonado con "Use this
+template", antes de correr esto):
   - Ya creaste tu organización en GitHub.
   - Ya generaste tus copias de Plantilla-Diseno1 y curso-admin en tu org, con
     "Use this template" (necesitás acceso de lectura a los repos de origen
@@ -275,7 +276,7 @@ def main():
 3. Probá el flujo con una fila de prueba antes de usarlo con estudiantes
    reales (Actions -> crear-repos-grupos.yml -> Run workflow).
 
-Ver https://disenobiomedico-1.github.io/Solicitar-Acceso/, Paso 8 en adelante, para el
+Ver https://disenobiomedico-1.github.io/Solicitar-Acceso/, Paso 7 en adelante, para el
 detalle de cada uno.
 """
     )
