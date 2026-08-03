@@ -242,7 +242,7 @@
   <div class="path-picker" role="group" aria-label="Selección de camino">
     <button type="button" class="path-btn" id="btn-auto" aria-pressed="false" onclick="elegirCamino('auto')">
       <strong>Camino automático</strong>
-      <small>Requiere Python y familiaridad con el uso de una terminal. Un solo script ejecuta los Pasos 4 a 6.</small>
+      <small>Requiere Python y familiaridad con el uso de una terminal. Un solo script cubre lo que en el camino manual son los Pasos 3 a 5.</small>
     </button>
     <button type="button" class="path-btn" id="btn-manual" aria-pressed="false" onclick="elegirCamino('manual')">
       <strong>Camino manual</strong>
@@ -282,18 +282,21 @@
     <div class="warn">No compartas este token ni lo pegues en ningún chat, issue o PR.</div>
   </div>
 
-  <!-- Paso 3: solo camino automático -->
+  <!-- Paso 3: bifurcación. El script automático y el primer paso manual
+       comparten el número 3 porque son alternativas en el mismo punto de la
+       secuencia, no dos cosas distintas: así ningún camino muestra un hueco
+       en la numeración al ocultar los pasos del otro camino. -->
   <div class="step" data-path="auto">
     <h3><span class="step-num">3</span> Ejecuta el script automático <span class="tag">Camino automático</span></h3>
-    <p><a href="replicar_en_tu_org.py" download>Este script</a> ejecuta los Pasos 4 a 6.</p>
+    <p><a href="replicar_en_tu_org.py" download>Este script</a> cubre lo que en el camino manual son los Pasos 3 a 5.</p>
     <pre><code>pip install requests pynacl
 python3 replicar_en_tu_org.py --org TU-ORG-NUEVA</code></pre>
-    <p>Si no se pasa <code>--token</code>, el script lo solicita de forma oculta. Al finalizar, continúa en el Paso 7.</p>
+    <p>Si no se pasa <code>--token</code>, el script lo solicita de forma oculta. Al finalizar, continúa en el Paso 6.</p>
   </div>
 
-  <!-- Pasos 4-6: solo camino manual -->
+  <!-- Pasos 3-5: solo camino manual -->
   <div class="step" data-path="manual">
-    <h3><span class="step-num">4</span> Adapta el nombre de tu organización en los scripts <span class="tag">Camino manual</span></h3>
+    <h3><span class="step-num">3</span> Adapta el nombre de tu organización en los scripts <span class="tag">Camino manual</span></h3>
     <p>
       El nombre de la organización de origen aparece como variable al inicio de
       varios scripts. En la copia de <code>curso-admin</code>, busca y reemplaza
@@ -315,7 +318,7 @@ python3 replicar_en_tu_org.py --org TU-ORG-NUEVA</code></pre>
   </div>
 
   <div class="step" data-path="manual">
-    <h3><span class="step-num">5</span> Guarda el token como secret <span class="tag">Camino manual</span></h3>
+    <h3><span class="step-num">4</span> Guarda el token como secret <span class="tag">Camino manual</span></h3>
     <p>
       En la copia de <code>curso-admin</code>: <em>Settings</em> → <em>Secrets and
       variables</em> → <em>Actions</em> → <em>New repository secret</em> →
@@ -324,7 +327,7 @@ python3 replicar_en_tu_org.py --org TU-ORG-NUEVA</code></pre>
   </div>
 
   <div class="step" data-path="manual">
-    <h3><span class="step-num">6</span> Configura los privilegios de tu organización <span class="tag">Camino manual</span></h3>
+    <h3><span class="step-num">5</span> Configura los privilegios de tu organización <span class="tag">Camino manual</span></h3>
     <p>En <code>github.com/organizations/TU-ORG/settings/member_privileges</code>, configura:</p>
     <ul>
       <li><strong>Base permissions</strong>: "No permissions".</li>
@@ -333,9 +336,9 @@ python3 replicar_en_tu_org.py --org TU-ORG-NUEVA</code></pre>
     </ul>
   </div>
 
-  <!-- Pasos comunes 7-8 -->
+  <!-- Pasos comunes 6-7 -->
   <div class="step step-common">
-    <h3><span class="step-num">7</span> Completa tus datos</h3>
+    <h3><span class="step-num">6</span> Completa tus datos</h3>
     <ul>
       <li><code>curso-admin/roster/*.csv</code>: los grupos, un archivo por grupo u horario.</li>
       <li><code>curso-admin/scripts/issues_iniciales/fechas-retos.csv</code>: las fechas del semestre. Formato <code>id;fecha</code>; los 16 Retos ya están listados, resta completar la columna de fecha.</li>
@@ -345,7 +348,7 @@ python3 replicar_en_tu_org.py --org TU-ORG-NUEVA</code></pre>
   </div>
 
   <div class="step step-common">
-    <h3><span class="step-num">8</span> Prueba con una fila de prueba antes de usarlo con estudiantes reales</h3>
+    <h3><span class="step-num">7</span> Prueba con una fila de prueba antes de usarlo con estudiantes reales</h3>
     <ol>
       <li>Agrega una fila de prueba a un roster con un usuario de GitHub de prueba.</li>
       <li>Ejecuta <code>crear-repos-grupos.yml</code> manualmente desde la pestaña <em>Actions</em>.</li>

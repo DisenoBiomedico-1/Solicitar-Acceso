@@ -276,7 +276,7 @@ def main():
 3. Probá el flujo con una fila de prueba antes de usarlo con estudiantes
    reales (Actions -> crear-repos-grupos.yml -> Run workflow).
 
-Ver https://disenobiomedico-1.github.io/Solicitar-Acceso/, Paso 7 en adelante, para el
+Ver https://disenobiomedico-1.github.io/Solicitar-Acceso/, Paso 6 en adelante, para el
 detalle de cada uno.
 """
     )
